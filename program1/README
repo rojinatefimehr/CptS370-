@@ -1,0 +1,36 @@
+3. Statement of Work
+Linux System Programming
+Code a C++ program, named processes.cpp that receives one argument, (i.e., argv[1]) upon its
+invocation and searches how many processes whose name is given in argv[1] are running on
+the system where your program has been invoked. To be specific, your program should
+demonstrate the same behavior as:
+$ ps -A | grep argv[1] | wc -l
+Implement processes using the following system calls:
+1. pid_t fork( void ); creates a child process that differs from the parent process only in
+terms of their process IDs.
+2. int execlp( const char *file, const char *arg, ..., (char *)0 ); replaces the current
+process image with a new process image that will be loaded from file. The first
+argument arg must be the same as file. The last argument is a NULL pointer of type
+“char *”.
+3. int pipe( int filedes[2] ); creates a pair of file descriptors (which point to a pipe
+structure), and places them in the array pointed to by filedes. filedes[0] is for reading
+data from the pipe, filedes[1] is for writing data to the pipe.
+4. int dup2( int oldfd, int newfd ); creates in newfd a copy of the file descriptor oldfd.
+5. pid_t wait( int *status ); waits for process termination
+6. int close( int fd ); closes a file descriptor.
+For more details, type the man command from the shell prompt line. Use only the system calls
+listed above. Do not use the system system call. Imitate how the shell performs "ps -A | grep
+argv[1] | wc -l". In other words, your parent process spawns a child that spawns a grand-child
+that spawns a great-grand-child. Each process should execute a different command as follows:
+Process Command Stdin Stdout
+Parent
+wait for a
+child no change no change
+Child wc -l redirected from a grand-child's stdout no change
+Grand-child grep argv[1]
+redirected from a great-grand-child's
+stdout redirected to a child's stdin
+Great-grand-
+child ps -A no change
+redirected to a grand-child's
+stdi
